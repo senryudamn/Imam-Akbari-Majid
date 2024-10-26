@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis HAM</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f0f2f5; }
+        .quiz-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .question-container { margin-bottom: 20px; padding: 15px; border: 1px solid #e1e4e8; border-radius: 4px; }
+        .options-container { margin-left: 20px; }
+        .option { margin: 10px 0; }
+        button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        .result-container { text-align: center; display: none; }
+        .score { font-size: 48px; color: #1a73e8; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Kuis HAM</h1>
+
+        <!-- Bagian 1: Pilihan Ganda -->
+        <div class="question-container">
+            <p><strong>1. Apa yang dimaksud dengan HAM?</strong></p>
+            <div class="options-container">
+                <div><input type="radio" name="q1" value="A"> A. Hak yang diberikan oleh masyarakat kepada setiap individu</div>
+                <div><input type="radio" name="q1" value="B"> B. Hak dasar yang melekat pada diri manusia sejak lahir</div>
+                <div><input type="radio" name="q1" value="C"> C. Hak yang hanya berlaku bagi warga negara yang memiliki status sosial tinggi</div>
+                <div><input type="radio" name="q1" value="D"> D. Hak yang dapat dicabut oleh pemerintah</div>
+            </div>
+        </div>
+
+        <!-- Bagian 2: Benar/Salah -->
+        <div class="question-container">
+            <p><strong>2. Magna Carta tahun 1215 merupakan tonggak sejarah awal pengakuan HAM modern.</strong></p>
+            <div class="options-container">
+                <div><input type="radio" name="q2" value="true"> Benar</div>
+                <div><input type="radio" name="q2" value="false"> Salah</div>
+            </div>
+        </div>
+
+        <!-- Bagian 3: Jawaban Singkat -->
+        <div class="question-container">
+            <p><strong>3. Sebutkan tiga karakteristik utama HAM!</strong></p>
+            <textarea id="q3" rows="3" style="width: 100%;"></textarea>
+        </div>
+
+        <!-- Tombol Submit -->
+        <button onclick="calculateScore()">Lihat Hasil</button>
+
+        <!-- Hasil Kuis -->
+        <div class="result-container" id="results">
+            <h2>Hasil Kuis</h2>
+            <div class="score" id="score">0%</div>
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateScore() {
+            let score = 0;
+            let totalQuestions = 3;
+
+            // Check multiple choice answer
+            if (document.querySelector('input[name="q1"]:checked')?.value === 'B') score++;
+
+            // Check true/false answer
+            if (document.querySelector('input[name="q2"]:checked')?.value === 'true') score++;
+
+            // Check short answer for keywords
+            const q3Answer = document.getElementById('q3').value.toLowerCase();
+            const keywords = ['universal', 'tidak dapat dicabut', 'tidak dapat dibagi'];
+            let keywordScore = 0;
+            keywords.forEach(keyword => {
+                if (q3Answer.includes(keyword)) keywordScore += 1 / keywords.length;
+            });
+            score += keywordScore;
+
+            // Calculate and display the final score
+            const finalScore = Math.round((score / totalQuestions) * 100);
+            document.getElementById('score').textContent = `${finalScore}%`;
+            document.getElementById('results').style.display = 'block';
+
+            const feedback = document.getElementById('feedback');
+            if (finalScore >= 80) {
+                feedback.textContent = 'Selamat! Anda memiliki pemahaman yang sangat baik tentang HAM!';
+            } else if (finalScore >= 60) {
+                feedback.textContent = 'Bagus! Anda memiliki pemahaman dasar yang cukup tentang HAM.';
+            } else {
+                feedback.textContent = 'Anda mungkin perlu mempelajari kembali materi tentang HAM.';
+            }
+        }
+    </script>
+</body>
+</html>
